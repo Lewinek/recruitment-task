@@ -1,4 +1,4 @@
-package com.example.recruitment_task.data.local.dto
+package com.example.recruitment_task.data.remote.dto
 
 
 import kotlinx.serialization.SerialName
