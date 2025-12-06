@@ -8,6 +8,7 @@ import com.example.recruitment_task.domain.repository.AdRepository
 import com.example.recruitment_task.domain.usecase.GetAdsUseCase
 import com.example.recruitment_task.domain.usecase.GetFavouritesAdsUseCase
 import com.example.recruitment_task.presentation.ads.AdsViewModel
+import com.example.recruitment_task.presentation.favorites.FavoritesAdsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -45,12 +46,14 @@ val appModule = module {
             MarketplaceDatabase::class.java,
             "marketplace_database"
         )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
-    single { get<MarketplaceDatabase>().favoriteAdDao()}
+    single { get<MarketplaceDatabase>().favoriteAdDao() }
 
     single<AdRepository> {
-        AdRepositoryImpl(api = get())
+        AdRepositoryImpl(api = get(), favoriteAdDao = get())
     }
 
     factory { GetAdsUseCase(repository = get()) }
@@ -58,5 +61,9 @@ val appModule = module {
 
     viewModel {
         AdsViewModel(getAdsUseCase = get())
+    }
+
+    viewModel {
+        FavoritesAdsViewModel(getFavouritesAdsUseCase = get())
     }
 }
