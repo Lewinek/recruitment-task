@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface AdRepository {
     fun getAds() : Flow<ResultWrapper<List<Ad>>>
+    fun getFavouritesAds() : Flow<List<Ad>>
 }
