@@ -1,6 +1,7 @@
 package com.example.recruitment_task.presentation.ads
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,7 +45,8 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdsScreen(
-    viewModel: AdsViewModel = koinViewModel()
+    viewModel: AdsViewModel = koinViewModel(),
+    onAdClick: (Ad) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -68,7 +70,8 @@ fun AdsScreen(
             when (uiState) {
                 AdsUiState.Loading -> LoadingState()
                 is AdsUiState.Success -> AdsList(
-                    ads = (uiState as AdsUiState.Success).ads
+                    ads = (uiState as AdsUiState.Success).ads,
+                    onAdClick = onAdClick
                 )
 
                 is AdsUiState.Error -> ErrorState(
@@ -83,7 +86,8 @@ fun AdsScreen(
 
 @Composable
 fun AdsList(
-    ads: List<Ad>
+    ads: List<Ad>,
+    onAdClick: (Ad) -> Unit = {}
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 150.dp),
@@ -94,7 +98,8 @@ fun AdsList(
     ) {
         items(ads) { ad ->
             AdCard(
-                ad = ad
+                ad = ad,
+                onClick = { onAdClick(ad) }
             )
         }
     }
@@ -102,10 +107,13 @@ fun AdsList(
 
 @Composable
 fun AdCard(
-    ad: Ad
+    ad: Ad,
+    onClick: () -> Unit = {}
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
