@@ -10,6 +10,7 @@ import com.example.recruitment_task.domain.usecase.GetAllFavoriteAdIdsUseCase
 import com.example.recruitment_task.domain.usecase.GetFavouritesAdsUseCase
 import com.example.recruitment_task.domain.usecase.ToggleFavoriteAdUseCase
 import com.example.recruitment_task.presentation.ads.AdsViewModel
+import com.example.recruitment_task.presentation.detail.AdDetailViewModel
 import com.example.recruitment_task.presentation.favorites.FavoritesAdsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -77,5 +78,9 @@ val appModule = module {
 
     viewModel {
         FavoritesAdsViewModel(getFavouritesAdsUseCase = get(), toggleFavoriteAdUseCase = get())
+    }
+
+    viewModel {
+        AdDetailViewModel(getAllFavoriteAdIdsUseCase = get(), toggleFavoriteAdUseCase = get())
     }
 }
