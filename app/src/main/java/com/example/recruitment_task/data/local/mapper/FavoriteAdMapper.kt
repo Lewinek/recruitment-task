@@ -12,3 +12,13 @@ fun FavoriteAdEntity.toDomain(): Ad {
         image = image
     )
 }
+
+fun Ad.toEntity(): FavoriteAdEntity{
+    return FavoriteAdEntity(
+        id = id,
+        title = title,
+        price = price,
+        location = location,
+        image = image
+    )
+}
