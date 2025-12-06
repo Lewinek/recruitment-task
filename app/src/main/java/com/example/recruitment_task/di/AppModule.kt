@@ -1,5 +1,9 @@
 package com.example.recruitment_task.di
 
+import com.example.recruitment_task.data.remote.MartketplaceApi
+import com.example.recruitment_task.data.repository.AdRepositoryImpl
+import com.example.recruitment_task.domain.repository.AdRepository
+import com.example.recruitment_task.domain.usecase.GetAdsUseCase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -26,4 +30,12 @@ val appModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    single { get<Retrofit>().create(MartketplaceApi::class.java) }
+
+    single<AdRepository>{
+        AdRepositoryImpl(api = get())
+    }
+
+    factory { GetAdsUseCase(repository = get()) }
 }
