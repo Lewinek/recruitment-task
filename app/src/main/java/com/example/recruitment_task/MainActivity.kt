@@ -57,6 +57,7 @@ fun RecruitmenttaskApp() {
                         icon = { Icon(it.icon, contentDescription = it.label) },
                         label = { Text(text = it.label) },
                         selected = it == currentDestination,
+                        alwaysShowLabel = true,
                         onClick = {
                             currentDestination = it
                             selectedAd = null
@@ -73,8 +74,17 @@ fun RecruitmenttaskApp() {
                     }
                 )
             } ?: when (currentDestination) {
-                AppDestinations.HOME -> AdsScreen()
-                AppDestinations.FAVORITES -> FavoritesAdsScreen()
+                AppDestinations.HOME -> AdsScreen(
+                    onAdClick = { ad ->
+                        selectedAd = ad
+                    }
+                )
+
+                AppDestinations.FAVORITES -> FavoritesAdsScreen(
+                    onAdClick = { ad ->
+                        selectedAd = ad
+                    }
+                )
             }
         }
     }

@@ -6,7 +6,9 @@ import com.example.recruitment_task.data.remote.MartketplaceApi
 import com.example.recruitment_task.data.repository.AdRepositoryImpl
 import com.example.recruitment_task.domain.repository.AdRepository
 import com.example.recruitment_task.domain.usecase.GetAdsUseCase
+import com.example.recruitment_task.domain.usecase.GetAllFavoriteAdIdsUseCase
 import com.example.recruitment_task.domain.usecase.GetFavouritesAdsUseCase
+import com.example.recruitment_task.domain.usecase.ToggleFavoriteAdUseCase
 import com.example.recruitment_task.presentation.ads.AdsViewModel
 import com.example.recruitment_task.presentation.favorites.FavoritesAdsViewModel
 import okhttp3.OkHttpClient
@@ -16,6 +18,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 val appModule = module {
 
@@ -28,6 +31,9 @@ val appModule = module {
     single {
         OkHttpClient.Builder()
             .addInterceptor(get<HttpLoggingInterceptor>())
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .build()
     }
 
@@ -58,12 +64,18 @@ val appModule = module {
 
     factory { GetAdsUseCase(repository = get()) }
     factory { GetFavouritesAdsUseCase(repository = get()) }
+    factory { ToggleFavoriteAdUseCase(repository = get()) }
+    factory { GetAllFavoriteAdIdsUseCase(repository = get()) }
 
     viewModel {
-        AdsViewModel(getAdsUseCase = get())
+        AdsViewModel(
+            getAdsUseCase = get(),
+            toggleFavoriteAdUseCase = get(),
+            getAllFavoriteAdIdsUseCase = get()
+        )
     }
 
     viewModel {
-        FavoritesAdsViewModel(getFavouritesAdsUseCase = get())
+        FavoritesAdsViewModel(getFavouritesAdsUseCase = get(), toggleFavoriteAdUseCase = get())
     }
 }

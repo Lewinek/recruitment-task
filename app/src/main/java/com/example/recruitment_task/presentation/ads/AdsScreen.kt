@@ -18,12 +18,15 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,9 +50,10 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AdsScreen(
     viewModel: AdsViewModel = koinViewModel(),
-    onAdClick: (Ad) -> Unit = {}
+    onAdClick: (Ad) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val favorites by viewModel.favorites.collectAsStateWithLifecycle()
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -71,7 +76,9 @@ fun AdsScreen(
                 AdsUiState.Loading -> LoadingState()
                 is AdsUiState.Success -> AdsList(
                     ads = (uiState as AdsUiState.Success).ads,
-                    onAdClick = onAdClick
+                    onAdClick = onAdClick,
+                    onFavoriteAdClick = { ad ->viewModel.toggleFavoriteAd(ad)},
+                    favorites = favorites
                 )
 
                 is AdsUiState.Error -> ErrorState(
@@ -87,7 +94,9 @@ fun AdsScreen(
 @Composable
 fun AdsList(
     ads: List<Ad>,
-    onAdClick: (Ad) -> Unit = {}
+    onAdClick: (Ad) -> Unit = {},
+    onFavoriteAdClick: (Ad) -> Unit,
+    favorites: Set<String>,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 150.dp),
@@ -99,7 +108,9 @@ fun AdsList(
         items(ads) { ad ->
             AdCard(
                 ad = ad,
-                onClick = { onAdClick(ad) }
+                onClick = { onAdClick(ad) },
+                onFavoriteAdClick = { onFavoriteAdClick(ad) },
+                isFavorite = favorites.contains(ad.id)
             )
         }
     }
@@ -108,7 +119,9 @@ fun AdsList(
 @Composable
 fun AdCard(
     ad: Ad,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    onFavoriteAdClick: () -> Unit = {},
+    isFavorite: Boolean = false,
 ) {
     Card(
         modifier = Modifier
@@ -130,6 +143,20 @@ fun AdCard(
                             .aspectRatio(4f / 3f),
                         contentScale = ContentScale.Crop
                     )
+
+                    IconButton(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(8.dp),
+                        onClick = onFavoriteAdClick,
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(24.dp),
+                            imageVector = if(isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = if(isFavorite) "Remove from favorites" else "Add to favorites",
+                            tint = if(isFavorite) MaterialTheme.colorScheme.primary else Color.White
+                        )
+                    }
                 }
 
                 Column(

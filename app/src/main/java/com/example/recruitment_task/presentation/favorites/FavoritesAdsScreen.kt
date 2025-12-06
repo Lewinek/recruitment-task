@@ -58,8 +58,10 @@ fun FavoritesAdsScreen(
                 is FavoritesAdsUIState.Loading -> LoadingState()
                 is FavoritesAdsUIState.Success -> FavoritesList(
                     favorites = (uiState as FavoritesAdsUIState.Success).favorites,
-                    onAdClick = onAdClick
+                    onAdClick = onAdClick,
+                    onFavoriteAdClick = {ad -> viewModel.toggleFavoriteAd(ad)}
                 )
+
                 is FavoritesAdsUIState.Empty -> EmptyFavoritesAdsState()
             }
         }
@@ -69,7 +71,8 @@ fun FavoritesAdsScreen(
 @Composable
 fun FavoritesList(
     favorites: List<Ad>,
-    onAdClick: (Ad) -> Unit
+    onAdClick: (Ad) -> Unit,
+    onFavoriteAdClick: (Ad) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 150.dp),
@@ -78,8 +81,12 @@ fun FavoritesList(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(favorites){ ad ->
-            AdCard(ad= ad, onClick = {onAdClick(ad)})
+        items(favorites) { ad ->
+            AdCard(
+                ad = ad,
+                onClick = { onAdClick(ad) },
+                isFavorite = true,
+                onFavoriteAdClick = { onFavoriteAdClick(ad) })
         }
     }
 }
