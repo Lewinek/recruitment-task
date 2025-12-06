@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EcDto(
     @SerialName("click")
-    val click: List<String>,
+    val click: List<String>?,
     @SerialName("inScreen")
-    val inScreen: List<String>
+    val inScreen: List<String>?
 )

@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PriceDto(
     @SerialName("value")
-    val value: String
+    val value: String?
 )

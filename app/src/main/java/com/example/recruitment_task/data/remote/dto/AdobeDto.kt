@@ -7,11 +7,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AdobeDto(
     @SerialName("category")
-    val category: String,
+    val category: String?,
     @SerialName("event_name")
-    val eventName: String,
+    val eventName: String?,
     @SerialName("type")
-    val type: String,
+    val type: String?,
     @SerialName("url")
-    val url: String
+    val url: String?
 )

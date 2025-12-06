@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ActionsDto(
     @SerialName("block")
-    val block: List<String>
+    val block: List<String>?
 )

@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ImageDto(
     @SerialName("height")
-    val height: Int,
+    val height: Int?,
     @SerialName("scalable")
-    val scalable: Boolean,
+    val scalable: Boolean?,
     @SerialName("type")
-    val type: String,
+    val type: String?,
     @SerialName("url")
-    val url: String,
+    val url: String?,
     @SerialName("width")
-    val width: Int
+    val width: Int?
 )

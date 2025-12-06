@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TrackingDto(
     @SerialName("adobe")
-    val adobe: AdobeDto,
+    val adobe: AdobeDto?,
     @SerialName("ec")
-    val ec: EcDto
+    val ec: EcDto?
 )

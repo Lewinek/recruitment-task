@@ -7,25 +7,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AdDto(
     @SerialName("actions")
-    val actions: ActionsDto,
+    val actions: ActionsDto?,
     @SerialName("ad-type")
     val adType: String,
     @SerialName("description")
-    val description: String,
+    val description: String?,
     @SerialName("id")
     val id: String,
     @SerialName("image")
-    val image: ImageDto,
+    val image: ImageDto?,
     @SerialName("location")
-    val location: String,
+    val location: String?,
     @SerialName("price")
-    val price: PriceDto,
+    val price: PriceDto?,
     @SerialName("score")
-    val score: String,
+    val score: String?,
     @SerialName("tracking")
-    val tracking: TrackingDto,
+    val tracking: TrackingDto?,
     @SerialName("type")
-    val type: String,
+    val type: String?,
     @SerialName("version")
-    val version: String
+    val version: String?
 )
