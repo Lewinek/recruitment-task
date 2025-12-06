@@ -4,8 +4,10 @@ import com.example.recruitment_task.data.remote.MartketplaceApi
 import com.example.recruitment_task.data.repository.AdRepositoryImpl
 import com.example.recruitment_task.domain.repository.AdRepository
 import com.example.recruitment_task.domain.usecase.GetAdsUseCase
+import com.example.recruitment_task.presentation.ads.AdsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -38,4 +40,8 @@ val appModule = module {
     }
 
     factory { GetAdsUseCase(repository = get()) }
+
+    viewModel {
+        AdsViewModel(getAdsUseCase = get())
+    }
 }
