@@ -1,12 +1,16 @@
 package com.example.recruitment_task.di
 
+import androidx.room.Room
+import com.example.recruitment_task.data.local.MarketplaceDatabase
 import com.example.recruitment_task.data.remote.MartketplaceApi
 import com.example.recruitment_task.data.repository.AdRepositoryImpl
 import com.example.recruitment_task.domain.repository.AdRepository
 import com.example.recruitment_task.domain.usecase.GetAdsUseCase
+import com.example.recruitment_task.domain.usecase.GetFavouritesAdsUseCase
 import com.example.recruitment_task.presentation.ads.AdsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -35,11 +39,22 @@ val appModule = module {
 
     single { get<Retrofit>().create(MartketplaceApi::class.java) }
 
-    single<AdRepository>{
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            MarketplaceDatabase::class.java,
+            "marketplace_database"
+        )
+    }
+
+    single { get<MarketplaceDatabase>().favoriteAdDao()}
+
+    single<AdRepository> {
         AdRepositoryImpl(api = get())
     }
 
     factory { GetAdsUseCase(repository = get()) }
+    factory { GetFavouritesAdsUseCase(repository = get()) }
 
     viewModel {
         AdsViewModel(getAdsUseCase = get())
