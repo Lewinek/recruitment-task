@@ -23,8 +23,6 @@ The goal was to implement a lightweight marketplace-style app using modern Andro
 ---
 
 ## 🚧 What could be better *(not implemented because of limited time)*
-- Extracting all hard-coded strings into **strings.xml**  
-- Moving repeated numeric/layout values into a separate **constants/resources file**  
 - Creating more **reusable UI components** to reduce duplication  
 - Implementing a **feature flag** to enable/disable the Favorites feature with one config value  
 - Adding proper **placeholder UI** for loading and error image states  
@@ -38,4 +36,4 @@ The core features worked as expected.
 ---
 
 ## ⏱️ Time spent
-Approximately **8 hours**.
+Approximately **8 hours 30min**.
