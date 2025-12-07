@@ -7,9 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.recruitment_task"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.recruitment_task"
@@ -39,6 +37,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -73,4 +72,5 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
 }
