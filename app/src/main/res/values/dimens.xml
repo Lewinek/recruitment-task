@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing -->
+    <dimen name="spacing_xxsmall">2dp</dimen>
+    <dimen name="spacing_xsmall">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+    <dimen name="spacing_xxlarge">32dp</dimen>
+
+    <!-- Card/Component padding -->
+    <dimen name="card_padding">12dp</dimen>
+    <dimen name="screen_padding">16dp</dimen>
+
+    <!-- Icon sizes -->
+    <dimen name="icon_small">14dp</dimen>
+    <dimen name="icon_medium">20dp</dimen>
+    <dimen name="icon_large">24dp</dimen>
+    <dimen name="icon_xlarge">48dp</dimen>
+
+    <!-- Grid spacing -->
+    <dimen name="grid_spacing">12dp</dimen>
+    <dimen name="grid_min_card_width">150dp</dimen>
+
+    <!-- Elevation -->
+    <dimen name="elevation_small">2dp</dimen>
+    <dimen name="elevation_medium">4dp</dimen>
+    <dimen name="elevation_large">8dp</dimen>
+
+    <!-- Bottom bar -->
+    <dimen name="bottom_bar_padding">16dp</dimen>
+</resources>

@@ -42,11 +42,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.example.recruitment_task.R
 import com.example.recruitment_task.domain.model.Ad
 import org.koin.androidx.compose.koinViewModel
 
@@ -65,12 +67,12 @@ fun AdDetailScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("") },
+                title = { },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -82,14 +84,14 @@ fun AdDetailScreen(
         bottomBar = {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shadowElevation = 8.dp,
+                shadowElevation = dimensionResource(R.dimen.elevation_large),
                 color = MaterialTheme.colorScheme.surface
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        .padding(dimensionResource(R.dimen.spacing_large)),
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium))
                 ) {
                     OutlinedButton(
                         onClick = {},
@@ -98,10 +100,10 @@ fun AdDetailScreen(
                         Icon(
                             imageVector = Icons.Default.MailOutline,
                             contentDescription = null,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(dimensionResource(R.dimen.icon_medium))
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Message")
+                        Spacer(modifier = Modifier.width(dimensionResource(R.dimen.spacing_small)))
+                        Text(stringResource(R.string.message_button))
                     }
 
                     Button(
@@ -111,10 +113,10 @@ fun AdDetailScreen(
                         Icon(
                             imageVector = Icons.Default.Phone,
                             contentDescription = null,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(dimensionResource(R.dimen.icon_medium))
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Contact")
+                        Spacer(modifier = Modifier.width(dimensionResource(R.dimen.spacing_small)))
+                        Text(stringResource(R.string.contact_button))
                     }
                 }
             }
@@ -139,14 +141,14 @@ fun AdDetailScreen(
                 Surface(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(8.dp),
+                        .padding(dimensionResource(R.dimen.spacing_small)),
                     shape = CircleShape,
                     color = Color.White,
-                    shadowElevation = 4.dp
+                    shadowElevation = dimensionResource(R.dimen.elevation_medium)
                 ) {
                     IconButton(
                         onClick = { viewModel.toggleFavoriteAd(ad) },
-                        modifier = Modifier.size(48.dp)
+                        modifier = Modifier.size(dimensionResource(R.dimen.icon_xlarge))
                     ) {
                         Icon(
                             imageVector = if (isFavorite)
@@ -161,38 +163,40 @@ fun AdDetailScreen(
                                 MaterialTheme.colorScheme.primary
                             else
                                 MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(dimensionResource(R.dimen.icon_large))
                         )
                     }
                 }
             }
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(dimensionResource(R.dimen.spacing_large))) {
                 Text(
                     text = ad.title,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "$${ad.price}",
-                    style = MaterialTheme.typography.displaySmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
+                ad.price?.let { price ->
+                    Text(
+                        text = stringResource(R.string.price_format, price),
+                        style = MaterialTheme.typography.displaySmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = null,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(dimensionResource(R.dimen.icon_medium)),
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.spacing_small)))
                     Column() {
                         Text(
-                            text = "LOCATION",
+                            text = stringResource(R.string.location_label),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontWeight = FontWeight.Bold
@@ -200,15 +204,15 @@ fun AdDetailScreen(
                         Text(text = ad.location, style = MaterialTheme.typography.bodyLarge)
                     }
                 }
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_xlarge)))
                 HorizontalDivider()
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_xlarge)))
                 Text(
-                    text = "About this item",
+                    text = stringResource(R.string.about_item_label),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_xlarge)))
                 Text(
                     text = ad.title,
                     style = MaterialTheme.typography.bodyLarge,

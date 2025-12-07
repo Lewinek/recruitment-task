@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">Recruitment-task</string>
+
+    <!-- Common -->
+    <string name="loading">Loading…</string>
+    <string name="retry">Retry</string>
+    <string name="error_prefix">Error: %1$s</string>
+
+    <!-- Ads Screen -->
+    <string name="marketplace_title">Marketplace</string>
+    <string name="no_ads_available">No ads available</string>
+    <string name="failed_to_load_ads">Failed to load ads</string>
+
+    <!-- Favorites Screen -->
+    <string name="favorites_title">Favorites</string>
+    <string name="no_favorites_yet">No favorites yet</string>
+    <string name="add_items_to_favorites">Add items to your favorites to see them here</string>
+
+    <!-- Ad Detail Screen -->
+    <string name="back">Back</string>
+    <string name="location_label">LOCATION</string>
+    <string name="message_button">Message</string>
+    <string name="contact_button">Contact</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="about_item_label">About this item</string>
+
+    <!-- Price format -->
+    <string name="price_format">$%1$s</string>
+
+    <!-- Error messages -->
+    <string name="error_loading_data">Could not load the data.\nCheck your internet connection and try again.</string>
 </resources>

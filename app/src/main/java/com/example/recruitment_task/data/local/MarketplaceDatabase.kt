@@ -7,7 +7,7 @@ import com.example.recruitment_task.data.local.entity.FavoriteAdEntity
 
 @Database(
     entities = [FavoriteAdEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 

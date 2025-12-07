@@ -54,8 +54,25 @@ fun RecruitmenttaskApp() {
             navigationSuiteItems = {
                 AppDestinations.entries.forEach {
                     item(
-                        icon = { Icon(it.icon, contentDescription = it.label) },
-                        label = { Text(text = it.label) },
+                        icon = {
+                            Icon(
+                                it.icon,
+                                contentDescription = it.label,
+                                tint = if (it == currentDestination)
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = it.label,
+                                color = if (it == currentDestination)
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
                         selected = it == currentDestination,
                         alwaysShowLabel = true,
                         onClick = {

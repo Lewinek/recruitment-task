@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class FavoriteAdEntity(
     @PrimaryKey val id: String,
     val title: String,
-    val price: String,
+    val price: String?,
     val location: String,
     val image: String,
 )

@@ -21,9 +21,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,12 +38,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.example.recruitment_task.R
 import com.example.recruitment_task.domain.model.Ad
+import com.example.recruitment_task.presentation.common.LoadingState
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,7 +62,7 @@ fun AdsScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text("Marketplace") },
+                title = { Text(stringResource(R.string.marketplace_title)) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface
                 )
@@ -77,12 +80,13 @@ fun AdsScreen(
                 is AdsUiState.Success -> AdsList(
                     ads = (uiState as AdsUiState.Success).ads,
                     onAdClick = onAdClick,
-                    onFavoriteAdClick = { ad ->viewModel.toggleFavoriteAd(ad)},
+                    onFavoriteAdClick = { ad -> viewModel.toggleFavoriteAd(ad) },
                     favorites = favorites
                 )
 
                 is AdsUiState.Error -> ErrorState(
                     message = (uiState as AdsUiState.Error).message,
+                    onRetry = { viewModel.loadAds() }
                 )
 
                 AdsUiState.Empty -> EmptyState()
@@ -99,11 +103,11 @@ fun AdsList(
     favorites: Set<String>,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 150.dp),
+        columns = GridCells.Adaptive(minSize = dimensionResource(R.dimen.grid_min_card_width)),
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        contentPadding = PaddingValues(dimensionResource(R.dimen.screen_padding)),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium))
     ) {
         items(ads) { ad ->
             AdCard(
@@ -127,7 +131,7 @@ fun AdCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(R.dimen.elevation_small)),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         )
@@ -147,20 +151,22 @@ fun AdCard(
                     IconButton(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
-                            .padding(8.dp),
+                            .padding(dimensionResource(R.dimen.spacing_small)),
                         onClick = onFavoriteAdClick,
                     ) {
                         Icon(
-                            modifier = Modifier.size(24.dp),
-                            imageVector = if(isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                            contentDescription = if(isFavorite) "Remove from favorites" else "Add to favorites",
-                            tint = if(isFavorite) MaterialTheme.colorScheme.primary else Color.White
+                            modifier = Modifier.size(dimensionResource(R.dimen.icon_large)),
+                            imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                            contentDescription = if (isFavorite) stringResource(R.string.remove_from_favorites) else stringResource(
+                                R.string.add_to_favorites
+                            ),
+                            tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.White
                         )
                     }
                 }
 
                 Column(
-                    modifier = Modifier.padding(12.dp)
+                    modifier = Modifier.padding(dimensionResource(R.dimen.spacing_small))
                 ) {
                     Text(
                         text = ad.title,
@@ -169,24 +175,27 @@ fun AdCard(
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "$${ad.price}",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_xsmall)))
+                    ad.price?.let { price ->
+                        Text(
+                            text = stringResource(R.string.price_format, price),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_xsmall)))
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
                             imageVector = Icons.Default.LocationOn,
                             contentDescription = null,
-                            modifier = Modifier.size(14.dp),
+                            modifier = Modifier.size(dimensionResource(R.dimen.icon_small)),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_xsmall)))
                         Text(
                             text = ad.location,
                             style = MaterialTheme.typography.bodySmall,
@@ -201,31 +210,27 @@ fun AdCard(
     }
 }
 
-@Composable
-fun LoadingState() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
 
 @Composable
 fun ErrorState(
-    message: String
+    message: String,
+    onRetry: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(dimensionResource(R.dimen.screen_padding)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Error: $message",
+            text = stringResource(R.string.error_loading_data),
             style = MaterialTheme.typography.bodyLarge
         )
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
+        Button(onClick = onRetry) {
+            Text(stringResource(R.string.retry))
+        }
     }
 }
 
@@ -236,7 +241,7 @@ fun EmptyState() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "No ads available",
+            text = stringResource(R.string.no_ads_available),
             style = MaterialTheme.typography.bodyLarge
         )
     }

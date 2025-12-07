@@ -9,7 +9,7 @@ fun AdDto.toDomain(): Ad {
         id = id,
         title = description ?: "",
         image = image?.url ?: "",
-        price = price?.value ?: "",
+        price = price?.value,
         location = location ?: ""
     )
 }
